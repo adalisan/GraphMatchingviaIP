@@ -9,20 +9,24 @@ import os
 import copy
 import pymatlab
 import numpy as np
+import ggplot as gg
+from scipy import stats as st
+
+from pandas import DataFrame as pd_df
 
 pr_dir = os.environ.get('PROJECT_DIR')
 session = pymatlab.session_factory()
 
-#pr_dir = 'G:\Sancar\Documents\projects'
-pr_dir = '~/projects/'
+
+#pr_dir = '~/projects/'
 print pr_dir
 
-root_dir = os.path.join(pr_dir,'SeededGraphMatch')
+root_dir = os.path.join(pr_dir, 'SeededGraphMatch')
 
 
 
 n = 45
-m = 5
+m = 10
 
 mplusn = m+n
 p = 0.2
@@ -50,6 +54,7 @@ convert_to_dbl = [''.join([x, "=double(", x, ")"]) for x in ["m", "n", "mplusn",
 
 
 for scr in convert_to_dbl:
+    print scr
     session.run(scr)
 
 chdir_script = """cd """ + root_dir
@@ -148,5 +153,25 @@ for mc in range(nmc):
     #gmodel_relaxed.getTuneresult(0)
     #gmodel_relaxed.optimize()
     # optimal_runtime[mc] =  gmodel_relaxed.Runtime
+
+tm_df = pd_df({
+    "tm": truematch_orig + truematch_mod,
+    "runtime": runtime_orig + runtime_mod,
+    "orig_or_mod": ["orig"]*nmc + ["mod"]*nmc
+})
+
+p_val_truematch_diff = st.ttest_ind(truematch_orig,truematch_mod)
+p_val_timediff = st.ttest_ind(runtime_orig,runtime_mod)
+
+#print gg.ggplot(tm_df, aes('orig_or_mod', 'tm')) + \
+#  gg.geom_line(colour='steelblue')
+
+
+#print gg.ggplot(tm_df, aes('orig_or_mod', 'runtime')) + \
+#  gg.geom_line(colour='steelblue')
+
+
+
+
 
 
