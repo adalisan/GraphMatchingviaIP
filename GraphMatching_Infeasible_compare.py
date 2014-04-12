@@ -160,8 +160,8 @@ tm_df = pd_df({
     "orig_or_mod": ["orig"]*nmc + ["mod"]*nmc
 })
 
-p_val_truematch_diff = st.ttest_ind(truematch_orig,truematch_mod)
-p_val_timediff = st.ttest_ind(runtime_orig,runtime_mod)
+p_val_truematch_diff = st.ttest_ind(truematch_orig, truematch_mod)
+p_val_timediff = st.ttest_ind(runtime_orig, runtime_mod)
 
 #print gg.ggplot(tm_df, aes('orig_or_mod', 'tm')) + \
 #  gg.geom_line(colour='steelblue')
